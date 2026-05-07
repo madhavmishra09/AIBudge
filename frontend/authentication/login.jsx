@@ -28,7 +28,6 @@ export default function Login(){
                     <Link to="/forgot-password">Forgot Password?</Link>
                     <button type="submit">Login</button>
                 </form>
-
             </div>
         </>
     )
