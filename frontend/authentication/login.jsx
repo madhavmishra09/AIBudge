@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Link} from "react-router-dom";
-function Login(){
+export default function Login(){
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -33,4 +33,3 @@ function Login(){
         </>
     )
 }
-export default Login
