@@ -1,5 +1,5 @@
 import {useState} from "react";
-function SignUp(){
+export default function SignUp(){
     const [formData,setFormData]=useState({
         fname:"",
         lname:"",
