@@ -16,8 +16,8 @@ export default function ForgotPassword(){
         e.preventDefault();
     };
     return<>
-        <div className="font-mont flex flex-col items-center justify-center min-h-screen">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
+        <div className="font-mont flex flex-col items-center justify-center min-h-screen px-4">
+            <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg">
                 <h2 className="font-mont text-2xl text-center p-2 font-bold">Change Your Password</h2>
                 <label htmlFor="email" className="font-mont font-bold mb-4 block">Email Address</label>
                 <input type="email" name="email" id="email" placeholder="Enter your Email Address" className="font-mont border border-gray-300 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300 w-full" value={formData.email} onChange={handleChange} required />
