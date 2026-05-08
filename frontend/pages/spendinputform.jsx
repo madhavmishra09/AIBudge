@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom'
 
 const questions = [
   {
+    id: 'aiTool',
+    title: 'Which AI tool do you use most?',
+    hint: 'Select the primary AI product from your current stack.',
+    options: ['Cursor', 'GitHub Copilot', 'Claude', 'ChatGPT', 'Gemini', 'OpenAI API', 'Other / multiple'],
+  },
+  {
     id: 'toolType',
     title: 'What type of AI tools do you use most?',
     hint: 'Pick the category that best matches your current stack.',
@@ -32,10 +38,10 @@ const questions = [
     options: ['1–5', '6–20', '21–50', '50+'],
   },
   {
-    id: 'biggestGoal',
-    title: 'What is your biggest AI goal right now?',
-    hint: 'This helps tailor your optimization path.',
-    options: ['Cut costs', 'Boost productivity', 'Find better tools', 'Automate more'],
+    id: 'purpose',
+    title: 'What is your main purpose for using AI tools?',
+    hint: 'This helps us understand your priorities and recommend the right savings path.',
+    options: ['Cut costs', 'Boost productivity', 'Find better tools', 'Automate more', 'Other / tell us more'],
   },
 ]
 
@@ -61,6 +67,9 @@ export default function SpendInputForm() {
 
   const currentQuestion = questions[currentQuestionIndex]
   const selectedValue = currentQuestion ? responses[currentQuestion.id] : null
+  const isOtherPurpose = currentQuestion?.id === 'purpose' && selectedValue === 'Other / tell us more'
+  const hasPurposeDetails = responses.purposeDetails?.trim().length > 0
+  const canContinue = Boolean(selectedValue && (!isOtherPurpose || hasPurposeDetails))
   const completed = currentQuestionIndex >= questions.length
   const progress = Math.round((Math.min(currentQuestionIndex, questions.length) / questions.length) * 100)
 
@@ -69,8 +78,12 @@ export default function SpendInputForm() {
     setResponses((prev) => ({ ...prev, [currentQuestion.id]: value }))
   }
 
+  const handlePurposeDetailsChange = (value) => {
+    setResponses((prev) => ({ ...prev, purposeDetails: value }))
+  }
+
   const handleNext = () => {
-    if (!selectedValue) return
+    if (!canContinue) return
     setCurrentQuestionIndex((index) => Math.min(index + 1, questions.length))
   }
 
@@ -111,7 +124,11 @@ export default function SpendInputForm() {
               {questions.map((question) => (
                 <div key={question.id} className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                   <h3 className="font-semibold text-gray-900">{question.title}</h3>
-                  <p className="mt-3 text-gray-600">{responses[question.id] || 'No answer selected'}</p>
+                  <p className="mt-3 text-gray-600">
+                    {question.id === 'purpose' && responses[question.id] === 'Other / tell us more'
+                      ? `${responses[question.id]}: ${responses.purposeDetails || 'No details provided'}`
+                      : responses[question.id] || 'No answer selected'}
+                  </p>
                 </div>
               ))}
             </div>
@@ -151,6 +168,29 @@ export default function SpendInputForm() {
                   />
                 ))}
               </div>
+
+              {currentQuestion.id === 'purpose' && (
+                <div className="space-y-3 rounded-3xl border border-gray-200 bg-gray-50 p-4">
+                  <label className="block text-sm font-semibold text-gray-900">More about your purpose</label>
+                  <textarea
+                    rows="4"
+                    value={responses.purposeDetails || ''}
+                    onChange={(e) => handlePurposeDetailsChange(e.target.value)}
+                    disabled={!isOtherPurpose}
+                    className="w-full rounded-3xl border border-gray-200 bg-white p-4 text-gray-900 outline-none transition focus:border-purple-400 focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:bg-gray-100"
+                    placeholder={
+                      isOtherPurpose
+                        ? 'Describe the specific goal you want us to optimize for.'
+                        : 'Select “Other / tell us more” to describe a custom purpose.'
+                    }
+                  />
+                  <p className="text-sm text-gray-600">
+                    {isOtherPurpose
+                      ? 'This input helps us use your custom purpose as a strategic advantage.'
+                      : 'Only required when you select Other / tell us more.'}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -170,9 +210,9 @@ export default function SpendInputForm() {
               <button
                 type="button"
                 onClick={handleNext}
-                disabled={!selectedValue}
+                disabled={!canContinue}
                 className={`rounded-2xl px-6 py-3 text-sm font-semibold text-white transition ${
-                  selectedValue
+                  canContinue
                     ? 'bg-purple-600 hover:bg-purple-700'
                     : 'bg-purple-200 text-purple-400 cursor-not-allowed'
                 }`}
