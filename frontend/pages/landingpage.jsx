@@ -19,7 +19,7 @@ export default function LandingPage(){
     }, []);
 
     return<>
-        <div className="font-mont min-h-screen bg-gray-50">
+        <div className="font-mont min-h-screen bg-purple-50">
             {/* Hero Section */}
             <section className="flex flex-col items-center justify-center min-h-screen px-4 py-16 text-center">
                 <h1 className="font-mont text-4xl md:text-6xl font-bold text-gray-900 mb-6">
