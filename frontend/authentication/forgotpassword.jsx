@@ -1,3 +1,4 @@
+import { useState } from "react";
 export default function ForgotPassword(){
     const [formData,setFormData]=useState({
         email:"",
@@ -20,7 +21,7 @@ export default function ForgotPassword(){
                 <h2>Change Your Password</h2>
                 <label htmlFor="email">Email Address</label>
                 <input type="email" name="email" id="email" placeholder="Enter your Email Address" value={formData.email} onChange={handleChange}required />
-                <label htmlFor="email">Set Up Your New Password</label>
+                <label htmlFor="password1">Set Up Your New Password</label>
                 <input type="password" name="password1" id="password" placeholder="Enter Your New Password" value={formData.email} onChange={handleChange}required />
                 <label htmlFor="password2">Confirm Your Password</label>
                 <input type="password" name="password2" id="password2" placeholder="Confirm Your New Password" value={formData.password2} onChange={handleChange}required />
