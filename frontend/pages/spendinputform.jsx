@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const questions = [
   {
@@ -62,6 +62,7 @@ function QuestionOptionButton({ label, selected, onClick }) {
 }
 
 export default function SpendInputForm() {
+  const navigate = useNavigate()
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [responses, setResponses] = useState({})
 
@@ -141,12 +142,13 @@ export default function SpendInputForm() {
               >
                 Start over
               </button>
-              <Link
-                to="/"
+              <button
+                type="button"
+                onClick={() => navigate('/report', { state: { responses } })}
                 className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
               >
-                Back to home
-              </Link>
+                View Your Report
+              </button>
             </div>
           </div>
         ) : (
