@@ -16,16 +16,18 @@ export default function ForgotPassword(){
         e.preventDefault();
     };
     return<>
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h2>Change Your Password</h2>
-                <label htmlFor="email">Email Address</label>
-                <input type="email" name="email" id="email" placeholder="Enter your Email Address" value={formData.email} onChange={handleChange}required />
-                <label htmlFor="password1">Set Up Your New Password</label>
-                <input type="password" name="password1" id="password" placeholder="Enter Your New Password" value={formData.email} onChange={handleChange}required />
-                <label htmlFor="password2">Confirm Your Password</label>
-                <input type="password" name="password2" id="password2" placeholder="Confirm Your New Password" value={formData.password2} onChange={handleChange}required />
-                <button type="submit">Confirm</button>
+        <div className="font-mont flex flex-col items-center justify-center min-h-screen">
+            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
+                <h2 className="font-mont text-2xl text-center p-2 font-bold">Change Your Password</h2>
+                <label htmlFor="email" className="font-mont font-bold mb-4 block">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="Enter your Email Address" className="font-mont border border-gray-300 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300 w-full" value={formData.email} onChange={handleChange} required />
+                <label htmlFor="password1" className="font-mont font-bold mb-4 block">Set Up Your New Password</label>
+                <input type="password" name="password1" id="password1" placeholder="Enter Your New Password" className="font-mont border border-gray-300 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300 w-full" value={formData.password1} onChange={handleChange} required />
+                <label htmlFor="password2" className="font-mont font-bold mb-4 block">Confirm Your Password</label>
+                <input type="password" name="password2" id="password2" placeholder="Confirm Your New Password" className="font-mont border border-gray-300 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-all duration-300 w-full" value={formData.password2} onChange={handleChange} required />
+                <button type="submit" className="font-mont bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-110 mx-auto block">
+                    Confirm
+                </button>
             </form>
         </div>
     </>
