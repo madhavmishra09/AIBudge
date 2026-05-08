@@ -17,7 +17,7 @@ export default function Login(){
         console.log("Login Data:", formData)
     };
     return(
-        <div className="font-mont flex flex-col items-center justify-center min-h-screen px-4">
+        <div className="font-mont flex flex-col items-center justify-center min-h-screen px-4 bg-purple-50">
             <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg">
                 <h2 className="font-mont text-2xl text-center p-2 font-bold">Login to your account</h2>
                 <label htmlFor="emailID" className="font-mont font-bold mb-4 block">Email Address</label>
