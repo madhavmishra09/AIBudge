@@ -6,14 +6,14 @@
 
 @layer utilities {
   .glass {
-    @apply bg-fuchsia-900/20 backdrop-blur-md border border-fuchsia-200/30 shadow-xl;
+    @apply bg-purple-500 border border-purple-300 shadow-xl;
   }
 
   .glass-dark {
-    @apply bg-slate-950/20 backdrop-blur-md border border-slate-700/40 shadow-lg;
+    @apply bg-slate-950 border border-slate-700 shadow-lg;
   }
 
   .glass-card {
-    @apply rounded-2xl p-4 ring-1 ring-white/20;
+    @apply rounded-2xl p-4 ring-1 ring-purple-300;
   }
 }
