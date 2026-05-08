@@ -25,9 +25,9 @@ export default function SignUp(){
                     <h2>Create Your Account</h2>
                     <label htmlFor="fname">First Name</label>
                     <input type="text" name="fname" id="fname" placeholder="Enter Your First Name" value={formData.fname} onChange={handleChange} required />
-                    <label htmlFor="firstname">First Name</label>
+                    <label htmlFor="mname">Middle Name</label>
                     <input type="text" name="mname" id="mname" placeholder="Enter Your Middle Name" value={formData.mname} onChange={handleChange} />
-                    <label htmlFor="firstname">First Name</label>
+                    <label htmlFor="lname">Last Name</label>
                     <input type="text" name="lname" id="lname" placeholder="Enter Your Last Name" value={formData.lname} onChange={handleChange} required />
                     <label htmlFor="emailID">Email Address</label>
                     <input type="email" name="email" id="email" placeholder="Enter Email" value={formData.email} onChange={handleChange} required />
