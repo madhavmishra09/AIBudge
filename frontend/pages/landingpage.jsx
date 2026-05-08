@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function LandingPage(){
     const [displayText, setDisplayText] = useState("");
@@ -28,9 +29,9 @@ export default function LandingPage(){
                 <p className="font-mont text-lg md:text-xl text-gray-600 mb-8 max-w-2xl">
                     Instantly audit your AI stack, uncover hidden savings, and get smarter alternatives — free, fast, and founder‑friendly.
                 </p>
-                <a href="#" className="font-mont bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
+                <Link to="/spend-input" className="font-mont bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
                     Run Your Free Audit →
-                </a>
+                </Link>
             </section>
 
             {/* Social Proof */}
