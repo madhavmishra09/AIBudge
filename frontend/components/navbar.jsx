@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Login from "../authentication/login"
-import SignUp from "../authentication/signup"
+import {Link} from "react-router-dom";
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     return (
@@ -10,8 +9,8 @@ export default function Navbar() {
                 <button className="text-white text-2xl md:hidden" onClick={() => setIsOpen(!isOpen)}>☰</button>
                 <ul className="hidden md:flex space-x-6 text-white font-medium">
                     <li><a href="#About" className="hover:text-gray-200">About</a></li>
-                    <li><a href="{Login}" className="hover:text-gray-200">Login</a></li>
-                    <li><a href="{SignUp}" className="hover:text-gray-200">Sign Up</a></li>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/signup">Sign Up</Link></li>
                     <li><a href="">Contact</a></li>
                 </ul>
             </div>
@@ -21,7 +20,8 @@ export default function Navbar() {
             >
                 <ul className="flex flex-col space-y-3 md:hidden text-white font-medium">
                     <li><a href="#About" className="hover:text-gray-200 transition-all duration-300 transform hover:scale-110">About</a></li>
-                    <li><a href="#Calculate" className="hover:text-gray-200 transition-all duration-300 transform hover:scale-110">Calculate</a></li>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/signup">Sign Up</Link></li>
                     <li><a href="#Contact" className="hover:text-gray-200 transition-all duration-300 transform hover:scale-110">Contact</a></li>
                 </ul>
             </div>
