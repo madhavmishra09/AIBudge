@@ -36,7 +36,7 @@
 - Landing Page, Data Collection regarding spending on AI tools and their usage via a form, report template which will be generated with the help of AI
 - I am going to represent it with the help of graphs and pie chart for better understanding for the user. 
 
-## Day 4 - 2026-05-09
+## Day 3 - 2026-05-08
 **Hours Worked:** 2 hours (approx)
 
 **What I did:** 
@@ -61,23 +61,4 @@
 - Implement data persistence (save reports to database or localStorage)
 - Add sharing functionality for reports
 - Set up backend API endpoints for storing audit data
-- Integrate Ollama LLM for AI-powered recommendations on report
-
-## Day 3 - 2026-05-08
-**Hours Worked:** 3 hours (approx)
-
-**What I did:** 
-- Completed authentication system which contains creating an account, entering their credentials and if a user forgets his or her password then he or she can change it as soon as possible.
-- I have added navigation bar for easy access for the user.
-
-**What I learned:**
-- useState concept revised
-
-**Blockers / what I'm stuck on:** There are no blockers specifically but in my mind there's still a question if I am going to complete this project with all the working and testing done. Will I be recruited? I don't know the answer to that question yet. I will work hard. 
-
-**Plan for tomorrow:** 
-- Start adding components such as reusable buttons for the form 
-- Add styling to my pages 
-- Routing setup 
-- Landing Page, Data Collection regarding spending on AI tools and their usage via a form, report template which will be generated with the help of AI
-- I am going to represent it with the help of graphs and pie chart for better understanding for the user. 
+- Integrate Ollama LLM for AI-powered recommendations on report 
