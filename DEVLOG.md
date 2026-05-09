@@ -62,3 +62,21 @@
 - Add sharing functionality for reports
 - Set up backend API endpoints for storing audit data
 - Integrate Ollama LLM for AI-powered recommendations on report 
+
+## Day 4 - 2026-05-09
+**Hours Worked:** 5 hours (approx)
+
+**What I did:** 
+- Built the server for the project
+- Built the database schema so that form data and user data will be there
+
+**What I learned:**
+- Database Management Systems revised
+
+**Blockers / what I'm stuck on:** Backend work
+
+**Plan for tomorrow:** 
+- Improve the UX 
+- Summary Report work 
+- Finishing of the product
+- Hosting 
