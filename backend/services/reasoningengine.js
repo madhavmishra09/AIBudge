@@ -1,4 +1,4 @@
-const toolKnowledge = require('../data/toolKnowledge')
+const toolKnowledge = require('../data/toolknowledge')
 
 const reasoningEngine = (data) => {
 
