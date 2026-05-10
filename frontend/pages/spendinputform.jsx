@@ -1,51 +1,98 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const questions = [
   {
-    id: 'aiTool',
-    title: 'Which AI tool do you use most?',
-    hint: 'Select the primary AI product from your current stack.',
-    options: ['Cursor', 'GitHub Copilot', 'Claude', 'ChatGPT', 'Gemini', 'OpenAI API', 'Other / multiple'],
-  },
-  {
-    id: 'toolType',
-    title: 'What type of AI tools do you use most?',
-    hint: 'Pick the category that best matches your current stack.',
+    id: 'workflow',
+    multiSelect: true,
+    title: 'Which workflows do you use AI for?',
+    hint: 'Select all workflows where AI tools are actively used.',
     options: [
-      'Coding / Development',
-      'Design / Creative',
-      'Analytics / Reporting',
-      'General productivity',
+      'Software Development',
+      'Content & Research',
+      'Design & Creative Work',
+      'Business Operations',
+      'Data & Analytics',
+      'General Productivity',
     ],
   },
+
   {
-    id: 'billingFrequency',
-    title: 'How often do you pay for AI services?',
-    hint: 'This helps estimate how much you can save over time.',
-    options: ['Daily', 'Weekly', 'Monthly', 'Quarterly / Annually'],
+    id: 'subscriptionManagement',
+    multiSelect: false,
+    title: 'How are your AI subscriptions currently managed?',
+    hint: 'Understanding ownership helps identify optimization opportunities.',
+    options: [
+      'Personally paid subscriptions',
+      'Team-managed licenses',
+      'Company-wide procurement',
+      'Mixed setup',
+    ],
   },
+
   {
-    id: 'monthlyBudget',
-    title: 'What is your approximate monthly AI spend?',
-    hint: 'If you are unsure, choose the closest range.',
-    options: ['$0–100', '$100–500', '$500–1K', '$1K+'],
+    id: 'monthlySpend',
+    multiSelect: false,
+    title: 'What is your estimated monthly AI spend across all tools?',
+    hint: 'Include subscriptions, API usage, and team licenses.',
+    options: [
+      '$0–100',
+      '$100–500',
+      '$500–1K',
+      '$1K+',
+    ],
   },
+
   {
     id: 'teamSize',
-    title: 'How many people use AI tools in your team?',
-    hint: 'This determines the scale of your stack and savings.',
-    options: ['1–5', '6–20', '21–50', '50+'],
+    multiSelect: false,
+    title: 'How many people actively use AI tools in your organization?',
+    hint: 'This helps us evaluate scaling efficiency and tool overlap.',
+    options: [
+      '1–5',
+      '6–20',
+      '21–50',
+      '50+',
+    ],
   },
+
   {
-    id: 'purpose',
-    title: 'What is your main purpose for using AI tools?',
-    hint: 'This helps us understand your priorities and recommend the right savings path.',
-    options: ['Cut costs', 'Boost productivity', 'Find better tools', 'Automate more', 'Other / tell us more'],
+    id: 'optimizationGoal',
+    multiSelect: true,
+    title: 'What are you optimizing for right now?',
+    hint: 'Select all outcomes that matter to your organization.',
+    options: [
+      'Reduce unnecessary AI spending',
+      'Improve developer productivity',
+      'Replace overlapping subscriptions',
+      'Find higher ROI AI tools',
+      'Scale AI usage efficiently',
+      'Standardize our AI stack',
+      'Other / tell us more',
+    ],
+  },
+
+  {
+    id: 'leastValuable',
+    multiSelect: true,
+    title: 'Which AI subscriptions feel the least valuable right now?',
+    hint: 'Select any subscriptions that currently feel redundant or underutilized.',
+    options: [
+      'ChatGPT',
+      'Claude',
+      'Cursor',
+      'GitHub Copilot',
+      'Gemini',
+      'Not sure yet',
+    ],
   },
 ]
 
-function QuestionOptionButton({ label, selected, onClick }) {
+function QuestionOptionButton({
+  label,
+  selected,
+  onClick,
+}) {
   return (
     <button
       type="button"
@@ -62,144 +109,382 @@ function QuestionOptionButton({ label, selected, onClick }) {
 }
 
 export default function SpendInputForm() {
+
   const navigate = useNavigate()
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] =
+    useState(0)
+
   const [responses, setResponses] = useState({})
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const selectedValue = currentQuestion ? responses[currentQuestion.id] : null
-  const isOtherPurpose = currentQuestion?.id === 'purpose' && selectedValue === 'Other / tell us more'
-  const hasPurposeDetails = responses.purposeDetails?.trim().length > 0
-  const canContinue = Boolean(selectedValue && (!isOtherPurpose || hasPurposeDetails))
-  const completed = currentQuestionIndex >= questions.length
-  const progress = Math.round((Math.min(currentQuestionIndex, questions.length) / questions.length) * 100)
+  const currentQuestion =
+    questions[currentQuestionIndex]
+
+  const selectedValue =
+    currentQuestion
+      ? responses[currentQuestion.id]
+      : currentQuestion?.multiSelect
+      ? []
+      : null
+
+  const insights = {
+    Cursor:
+      'Cursor already covers many coding assistant workflows.',
+
+    Claude:
+      'Claude performs especially well for reasoning-heavy tasks and research workflows.',
+
+    ChatGPT:
+      'ChatGPT is commonly used across multiple overlapping workflows.',
+
+    Gemini:
+      'Gemini often provides strong value for budget-conscious teams.',
+
+    'Reduce unnecessary AI spending':
+      'We will prioritize aggressive cost optimization opportunities.',
+
+    'Replace overlapping subscriptions':
+      'We will analyze redundancy across your AI subscriptions.',
+  }
+
+  const isOtherPurpose =
+    currentQuestion?.id === 'optimizationGoal' &&
+    selectedValue?.includes(
+      'Other / tell us more'
+    )
+
+  const hasPurposeDetails =
+    responses.purposeDetails?.trim().length > 0
+
+  const canContinue = currentQuestion?.multiSelect
+    ? selectedValue?.length > 0 &&
+      (!isOtherPurpose || hasPurposeDetails)
+    : Boolean(
+        selectedValue &&
+          (!isOtherPurpose ||
+            hasPurposeDetails)
+      )
+
+  const completed =
+    currentQuestionIndex >= questions.length
+
+  const progress = Math.round(
+    (
+      Math.min(
+        currentQuestionIndex,
+        questions.length
+      ) / questions.length
+    ) * 100
+  )
 
   const handleOptionClick = (value) => {
+
     if (!currentQuestion) return
-    setResponses((prev) => ({ ...prev, [currentQuestion.id]: value }))
+
+    if (currentQuestion.multiSelect) {
+
+      setResponses((prev) => {
+
+        const currentSelections =
+          prev[currentQuestion.id] || []
+
+        const alreadySelected =
+          currentSelections.includes(value)
+
+        return {
+          ...prev,
+
+          [currentQuestion.id]: alreadySelected
+            ? currentSelections.filter(
+                (item) => item !== value
+              )
+            : [...currentSelections, value],
+        }
+      })
+
+    } else {
+
+      setResponses((prev) => ({
+        ...prev,
+        [currentQuestion.id]: value,
+      }))
+
+    }
   }
 
   const handlePurposeDetailsChange = (value) => {
-    setResponses((prev) => ({ ...prev, purposeDetails: value }))
+    setResponses((prev) => ({
+      ...prev,
+      purposeDetails: value,
+    }))
   }
 
   const handleNext = () => {
+
     if (!canContinue) return
-    setCurrentQuestionIndex((index) => Math.min(index + 1, questions.length))
+
+    setCurrentQuestionIndex((index) =>
+      Math.min(index + 1, questions.length)
+    )
   }
 
   const handleBack = () => {
-    setCurrentQuestionIndex((index) => Math.max(index - 1, 0))
+
+    setCurrentQuestionIndex((index) =>
+      Math.max(index - 1, 0)
+    )
   }
 
   const handleRestart = () => {
+
     setResponses({})
+
     setCurrentQuestionIndex(0)
   }
 
   return (
+
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-purple-50 py-16 px-4">
+
       <div className="mx-auto max-w-4xl rounded-[36px] border border-purple-200 bg-white/90 p-8 shadow-[0_25px_80px_rgba(133,90,255,0.08)] backdrop-blur-xl">
+
+        {/* Header */}
+
         <div className="flex flex-col gap-3 pb-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-purple-600">AI Spend Audit</p>
-          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Tell us about your AI usage</h1>
-          <p className="mx-auto max-w-2xl text-gray-600">
-            Answer the questions below one at a time using reusable button choices. This makes the form faster, clearer, and easier to complete.
+
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-purple-600">
+            AI Spend Audit
           </p>
+
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            Optimize Your AI Stack
+          </h1>
+
+          <p className="mx-auto max-w-2xl text-gray-600">
+            We analyze your AI stack, detect overlapping subscriptions,
+            and identify opportunities to reduce costs while improving
+            productivity.
+          </p>
+
         </div>
 
+        {/* Progress */}
+
         <div className="mb-8 rounded-full bg-purple-100 p-1">
-          <div className="h-2 rounded-full bg-purple-500 transition-all duration-500" style={{ width: `${progress}%` }} />
+
+          <div
+            className="h-2 rounded-full bg-purple-500 transition-all duration-500"
+            style={{
+              width: `${progress}%`,
+            }}
+          />
+
         </div>
 
         {completed ? (
+
           <div className="space-y-6">
+
             <div className="rounded-3xl border border-purple-200 bg-purple-50 p-8">
-              <h2 className="text-2xl font-semibold text-purple-900">You’re all set!</h2>
+
+              <h2 className="text-2xl font-semibold text-purple-900">
+                Your AI Optimization Profile Is Ready
+              </h2>
+
               <p className="mt-3 text-gray-700">
-                We captured your answers.
+                We can now analyze your stack, detect overlapping
+                subscriptions, and recommend a more cost-efficient workflow.
               </p>
+
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
+
               {questions.map((question) => (
-                <div key={question.id} className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                  <h3 className="font-semibold text-gray-900">{question.title}</h3>
+
+                <div
+                  key={question.id}
+                  className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm"
+                >
+
+                  <h3 className="font-semibold text-gray-900">
+                    {question.title}
+                  </h3>
+
                   <p className="mt-3 text-gray-600">
-                    {question.id === 'purpose' && responses[question.id] === 'Other / tell us more'
-                      ? `${responses[question.id]}: ${responses.purposeDetails || 'No details provided'}`
-                      : responses[question.id] || 'No answer selected'}
+
+                    {Array.isArray(
+                      responses[question.id]
+                    )
+                      ? responses[
+                          question.id
+                        ]?.join(', ')
+                      : responses[
+                          question.id
+                        ] || 'No answer selected'}
+
                   </p>
+
                 </div>
+
               ))}
+
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
               <button
                 type="button"
                 onClick={handleRestart}
                 className="rounded-2xl border border-purple-300 bg-white px-6 py-3 text-sm font-semibold text-purple-700 transition hover:bg-purple-50"
               >
-                Start over
+                Start Over
               </button>
+
               <button
                 type="button"
-                onClick={() => navigate('/report', { state: { responses } })}
+                onClick={() =>
+                  navigate('/report', {
+                    state: { responses },
+                  })
+                }
                 className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
               >
-                View Your Report
+                View Optimization Report
               </button>
+
             </div>
+
           </div>
+
         ) : (
+
           <div className="space-y-8">
+
             <div className="space-y-4 rounded-[32px] border border-purple-200 bg-white p-8 shadow-sm">
+
               <div className="space-y-3">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-purple-500">Question {currentQuestionIndex + 1} of {questions.length}</p>
-                <h2 className="text-2xl font-semibold text-gray-900">{currentQuestion.title}</h2>
-                <p className="text-gray-600">{currentQuestion.hint}</p>
+
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-purple-500">
+                  Building Your AI Optimization Profile
+                </p>
+
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  {currentQuestion.title}
+                </h2>
+
+                <p className="text-gray-600">
+                  {currentQuestion.hint}
+                </p>
+
               </div>
 
+              {/* Multi Select Hint */}
+
+              {currentQuestion.multiSelect && (
+
+                <div className="rounded-2xl border border-purple-200 bg-purple-50 px-4 py-3 text-sm text-purple-800">
+                  You can select multiple options.
+                </div>
+
+              )}
+
+              {/* Options */}
+
               <div className="grid gap-4 md:grid-cols-2">
+
                 {currentQuestion.options.map((option) => (
+
                   <QuestionOptionButton
                     key={option}
                     label={option}
-                    selected={selectedValue === option}
-                    onClick={() => handleOptionClick(option)}
+                    selected={
+                      currentQuestion.multiSelect
+                        ? selectedValue?.includes(
+                            option
+                          )
+                        : selectedValue === option
+                    }
+                    onClick={() =>
+                      handleOptionClick(option)
+                    }
                   />
+
                 ))}
+
               </div>
 
-              {currentQuestion.id === 'purpose' && (
+              {/* Insights */}
+
+              {Array.isArray(selectedValue)
+                ? selectedValue.map((item) =>
+
+                    insights[item] ? (
+
+                      <div
+                        key={item}
+                        className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm"
+                      >
+                        {insights[item]}
+                      </div>
+
+                    ) : null
+                  )
+
+                : insights[selectedValue] && (
+
+                    <div className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm">
+                      {insights[selectedValue]}
+                    </div>
+
+                  )}
+
+              {/* Additional Input */}
+
+              {currentQuestion.id ===
+                'optimizationGoal' && (
+
                 <div className="space-y-3 rounded-3xl border border-gray-200 bg-gray-50 p-4">
-                  <label className="block text-sm font-semibold text-gray-900">More about your purpose</label>
+
+                  <label className="block text-sm font-semibold text-gray-900">
+                    More About Your Goal
+                  </label>
+
                   <textarea
                     rows="4"
-                    value={responses.purposeDetails || ''}
-                    onChange={(e) => handlePurposeDetailsChange(e.target.value)}
+                    value={
+                      responses.purposeDetails || ''
+                    }
+                    onChange={(e) =>
+                      handlePurposeDetailsChange(
+                        e.target.value
+                      )
+                    }
                     disabled={!isOtherPurpose}
                     className="w-full rounded-3xl border border-gray-200 bg-white p-4 text-gray-900 outline-none transition focus:border-purple-400 focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:bg-gray-100"
                     placeholder={
                       isOtherPurpose
-                        ? 'Describe the specific goal you want us to optimize for.'
-                        : 'Select “Other / tell us more” to describe a custom purpose.'
+                        ? 'Describe the specific optimization goal you want us to focus on.'
+                        : 'Select “Other / tell us more” to describe a custom optimization goal.'
                     }
                   />
-                  <p className="text-sm text-gray-600">
-                    {isOtherPurpose
-                      ? 'This input helps us use your custom purpose as a strategic advantage.'
-                      : 'Only required when you select Other / tell us more.'}
-                  </p>
+
                 </div>
+
               )}
+
             </div>
 
+            {/* Navigation */}
+
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
               <button
                 type="button"
                 onClick={handleBack}
-                disabled={currentQuestionIndex === 0}
+                disabled={
+                  currentQuestionIndex === 0
+                }
                 className={`rounded-2xl border px-6 py-3 text-sm font-semibold transition ${
                   currentQuestionIndex === 0
                     ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -219,12 +504,20 @@ export default function SpendInputForm() {
                     : 'bg-purple-200 text-purple-400 cursor-not-allowed'
                 }`}
               >
-                {currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next question'}
+                {currentQuestionIndex ===
+                questions.length - 1
+                  ? 'Finish'
+                  : 'Next Question'}
               </button>
+
             </div>
+
           </div>
+
         )}
+
       </div>
+
     </div>
   )
 }
