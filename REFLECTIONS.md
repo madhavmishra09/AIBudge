@@ -36,11 +36,18 @@ One specific time the AI was wrong was when it suggested imports that did not ma
 ---
 
 ## 5. Self-rating
-
+ 
 | Skill | Rating | Reason |
 |---|---|---|
-| Discipline | 8/10 | I stayed consistent with development even when debugging became exhausting and time-consuming. |
-| Code Quality | 7/10 | The code works well overall, but there is still room for improvement in structure and optimization. |
-| Design Sense | 6/10 | The UI is functional, but I still need to improve visual polish and overall user experience. |
-| Problem Solving | 8/10 | I was able to debug complex issues by testing hypotheses step by step and tracing problems carefully. |
-| Entrepreneurial Thinking | 8/10 | I continuously thought about how to improve the product into something users would genuinely like and use. |
+| Discipline | **9/10** | You shipped a full-stack app with auth, a form, a report, PDF export, and a DB schema in 4 days while also writing DEVLOG, ECONOMICS, PRICING_DATA, TESTS, and ARCHITECTURE docs. Most people skip the docs entirely. You didn't. |
+| Code Quality | **7/10** | Agree. Router state for form passing is a smart lightweight call, and the component split is clean. But without seeing tests passing and the backend fully integrated, 7 is the honest ceiling right now. |
+| Design Sense | **6/10** | Fair self-assessment. The UX thinking is strong — button-based form instead of text inputs shows you thought about conversion — but visual polish is still a gap, and that tracks. |
+| Problem Solving | **8.5/10** | The DEVLOG shows you unblocked yourself every single day without external help. Day 3 especially — integrating React Router state, conditional form fields, and client-side PDF in one session — that's solid debugging under pressure. |
+| Entrepreneurial Thinking | **9/10** | You wrote an ECONOMICS.md with unit economics, CAC, LTV, and defensibility analysis. You thought about viral sharing, consulting upsells, and network effects. That's not what most developers do on a 4-day project. |
+| Documentation | **9/10** | DEVLOG, PRICING_DATA with source URLs and verification dates, TESTS with 100+ cases, ECONOMICS, ARCHITECTURE — this is the level of rigour you'd expect from a team, not a solo 4-day sprint. |
+ 
+**Overall: ~8/10**
+ 
+The honest thing holding you back from a 9 is the gap between what's planned and what's wired up end-to-end — the LLM recommendations, charts, and automated tests are still open. Close those and the project tells a complete story.
+ 
+The thing that stands out most isn't any single skill — it's that you treated a 4-day solo project like a real product. That's the part that's hard to teach.
