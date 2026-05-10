@@ -12,7 +12,7 @@
 
 | Landing Page | Spend Form | Summary Report |
 |:---:|:---:|:---:|
-| ![Landing Page](./assets/landingpage.png) | ![Spend Form](./assets/form.png) | ![Summary Report](./report.png) |
+| ![Landing Page](./assets/landingpage.png) | ![Spend Form](./assets/form.png) | ![Summary Report](./assets/report.png) |
 
 
 ---
