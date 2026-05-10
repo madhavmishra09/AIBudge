@@ -447,7 +447,40 @@ export default function SummaryReport() {
           </div>
 
         </div>
+             <div className="rounded-3xl border border-purple-200 bg-white p-8 shadow-sm">
 
+  <h2 className="text-2xl font-semibold text-gray-900">
+    Tradeoff Analysis
+  </h2>
+
+  <p className="mt-6 leading-8 text-gray-700">
+
+    {audit?.tradeoffAnalysis ||
+
+      'Reducing overlapping AI subscriptions may slightly reduce access to advanced reasoning capabilities, but overall productivity impact is expected to remain low for your workflows.'}
+
+  </p>
+
+</div>
+<div className="rounded-3xl bg-gradient-to-r from-purple-600 to-fuchsia-500 p-8 text-white shadow-lg">
+
+  <p className="text-sm font-semibold uppercase tracking-[0.24em]">
+    Final Recommendation
+  </p>
+
+  <h2 className="mt-3 text-3xl font-bold">
+    Recommended Optimization Strategy
+  </h2>
+
+  <p className="mt-5 max-w-3xl leading-8 text-purple-100">
+
+    {audit?.finalRecommendation ||
+
+      'Consolidating overlapping subscriptions and standardizing workflows around fewer high-efficiency tools can significantly reduce recurring AI costs while maintaining productivity.'}
+
+  </p>
+
+</div>
         {/* Bottom Actions */}
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -471,7 +504,7 @@ export default function SummaryReport() {
       </div>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+           
     </div>
   )
 }
