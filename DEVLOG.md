@@ -80,3 +80,19 @@
 - Summary Report work 
 - Finishing of the product
 - Hosting 
+
+## Day 5 - 2026-05-10
+**Hours Worked:** 4 hours (approx)
+
+**What I did:** 
+- Completed the project what was required by the assignment 
+- I have done the every documentation required by the assignment 
+
+**What I learned:**
+- Overall Project insight
+
+**Blockers / what I'm stuck on:** Improving the project
+
+**Plan for tomorrow:** 
+- Improve the project
+- Push the final product for submission
