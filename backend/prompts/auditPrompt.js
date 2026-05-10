@@ -1,21 +1,15 @@
-const buildAuditPrompt = (data) => {
+const buildAuditPrompt = (
+  data,
+  reasoning
+) => {
 
   return `
 You are an AI stack optimization consultant.
 
-Your job is to analyze a company's AI tooling setup and recommend:
-- cheaper alternatives
-- productivity improvements
-- subscription consolidation
-- overlap reduction
+Analyze the following AI tooling setup.
 
-User Profile:
-
-Workflows:
+User Workflows:
 ${data.workflow?.join(', ')}
-
-Subscription Management:
-${data.subscriptionManagement}
 
 Monthly Spend:
 ${data.monthlySpend}
@@ -29,32 +23,40 @@ ${data.optimizationGoal?.join(', ')}
 Least Valuable Subscriptions:
 ${data.leastValuable?.join(', ')}
 
-Additional Notes:
-${data.purposeDetails || 'None'}
+Reasoning Engine Output:
 
-Use the following intelligence:
+Optimization Score:
+${reasoning.optimizationScore}/10
 
-- Cursor is strong for software development workflows
-- Claude excels at reasoning and research
-- ChatGPT is strong for general productivity and coding
-- Gemini is cost-effective for lightweight workflows
-- GitHub Copilot overlaps heavily with Cursor
-- Multiple premium subscriptions often create redundancy
+Overlap Risk:
+${reasoning.overlapRisk}
+
+Overlap Reasons:
+${reasoning.overlapReasons.join('\n')}
+
+Recommendations:
+${reasoning.recommendations.join('\n')}
+
+Suggested Stack:
+${reasoning.suggestedStack.join(', ')}
+
+Estimated Savings:
+${reasoning.estimatedSavings}
 
 Generate:
 
-1. optimizationScore (1-10)
-2. monthlySavingsEstimate
-3. overlapRisk (Low/Medium/High)
-4. recommendedStack
-5. strategicSummary
+1. strategicSummary
+2. tradeoffAnalysis
+3. finalRecommendation
 
 IMPORTANT:
+
 - strategicSummary must be around 100 words
-- give practical recommendations
+- explain WHY recommendations are being made
 - explain overlap
-- explain cheaper alternatives
-- maintain productivity
+- explain productivity tradeoffs
+- explain cost reduction opportunities
+- sound like a SaaS optimization consultant
 - avoid generic statements
 
 Respond ONLY in valid JSON.
@@ -62,14 +64,9 @@ Respond ONLY in valid JSON.
 Example:
 
 {
-  "optimizationScore": 7,
-  "monthlySavingsEstimate": "$40/month",
-  "overlapRisk": "Medium",
-  "recommendedStack": [
-    "Cursor Pro",
-    "Gemini AI Pro"
-  ],
-  "strategicSummary": "Your current AI stack shows overlap between..."
+  "strategicSummary": "Your current AI stack...",
+  "tradeoffAnalysis": "Replacing Claude...",
+  "finalRecommendation": "Standardize your stack..."
 }
 `
 }
