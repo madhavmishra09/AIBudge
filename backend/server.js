@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
 const formRoutes = require("./routes/formRoutes");
-
+const auditRoutes = require("./routes/auditRoutes");
 const app = express();
 
 app.use(cors());
@@ -13,7 +13,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/form", formRoutes);
-
+app.use("/api/audit", auditRoutes);
 // Test Route
 app.get("/", (req, res) => {
   res.send("AIBudge API Running");
