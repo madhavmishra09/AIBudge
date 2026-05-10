@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const reasoningEngine =
-  require('./reasoningEngine')
+  require('./reasoningengine')
 
 const buildAuditPrompt =
   require('../prompts/auditPrompt')
