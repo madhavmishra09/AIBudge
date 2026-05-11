@@ -43,17 +43,21 @@ const generateAudit = async (
 
   // STEP 5 — Ask Ollama
 
-  const ollamaResponse =
-    await axios.post(
-      'http://localhost:11434/api/generate',
-      {
-        model: 'phi3:mini',
+  const OLLAMA_BASE_URL =
+  process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
 
-        prompt,
+const ollamaResponse = await axios.post(
+  `${OLLAMA_BASE_URL}/api/generate`,
+  {
+    model: process.env.OLLAMA_MODEL || 'phi3:mini',
+    prompt,
+    stream: false,
+  },
+  {
+    timeout: 120000,
+  }
+)
 
-        stream: false,
-      }
-    )
 
   // STEP 6 — Parse AI response
 
