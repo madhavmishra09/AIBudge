@@ -86,6 +86,46 @@ const questions = [
       'Not sure yet',
     ],
   },
+  {
+    id: 'teamSatisfaction',
+    multiSelect: false,
+
+    title:
+      'How satisfied is your team with your current AI stack?',
+
+    hint:
+      'This helps us measure whether your current spend is delivering enough value.',
+
+    options: [
+      'Very Satisfied',
+      'Mostly Satisfied',
+      'Mixed Experience',
+      'Mostly Unsatisfied',
+      'Very Unsatisfied',
+    ],
+  },
+  {
+    id: 'biggestPainPoints',
+    multiSelect: true,
+
+    title:
+      'What are the biggest issues with your current AI stack?',
+
+    hint:
+      'Select all problems your team experiences regularly.',
+
+    options: [
+      'Too expensive',
+      'Overlapping subscriptions',
+      'Poor coding quality',
+      'Weak reasoning quality',
+      'Slow responses',
+      'Too many unused features',
+      'Difficult onboarding',
+      'Inconsistent outputs',
+      'Team adoption is low',
+    ],
+  }
 ]
 
 function QuestionOptionButton({
@@ -97,11 +137,10 @@ function QuestionOptionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 shadow-sm hover:border-purple-400 hover:bg-purple-50 ${
-        selected
-          ? 'border-purple-500 bg-purple-100 text-purple-900 shadow-md'
-          : 'border-gray-200 bg-white text-gray-700'
-      }`}
+      className={`w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 shadow-sm hover:border-purple-400 hover:bg-purple-50 ${selected
+        ? 'border-purple-500 bg-purple-100 text-purple-900 shadow-md'
+        : 'border-gray-200 bg-white text-gray-700'
+        }`}
     >
       {label}
     </button>
@@ -124,8 +163,8 @@ export default function SpendInputForm() {
     currentQuestion
       ? responses[currentQuestion.id]
       : currentQuestion?.multiSelect
-      ? []
-      : null
+        ? []
+        : null
 
   const insights = {
     Cursor:
@@ -158,12 +197,12 @@ export default function SpendInputForm() {
 
   const canContinue = currentQuestion?.multiSelect
     ? selectedValue?.length > 0 &&
-      (!isOtherPurpose || hasPurposeDetails)
+    (!isOtherPurpose || hasPurposeDetails)
     : Boolean(
-        selectedValue &&
-          (!isOtherPurpose ||
-            hasPurposeDetails)
-      )
+      selectedValue &&
+      (!isOtherPurpose ||
+        hasPurposeDetails)
+    )
 
   const completed =
     currentQuestionIndex >= questions.length
@@ -196,8 +235,8 @@ export default function SpendInputForm() {
 
           [currentQuestion.id]: alreadySelected
             ? currentSelections.filter(
-                (item) => item !== value
-              )
+              (item) => item !== value
+            )
             : [...currentSelections, value],
         }
       })
@@ -317,11 +356,11 @@ export default function SpendInputForm() {
                       responses[question.id]
                     )
                       ? responses[
-                          question.id
-                        ]?.join(', ')
+                        question.id
+                      ]?.join(', ')
                       : responses[
-                          question.id
-                        ] || 'No answer selected'}
+                      question.id
+                      ] || 'No answer selected'}
 
                   </p>
 
@@ -401,8 +440,8 @@ export default function SpendInputForm() {
                     selected={
                       currentQuestion.multiSelect
                         ? selectedValue?.includes(
-                            option
-                          )
+                          option
+                        )
                         : selectedValue === option
                     }
                     onClick={() =>
@@ -419,59 +458,59 @@ export default function SpendInputForm() {
               {Array.isArray(selectedValue)
                 ? selectedValue.map((item) =>
 
-                    insights[item] ? (
+                  insights[item] ? (
 
-                      <div
-                        key={item}
-                        className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm"
-                      >
-                        {insights[item]}
-                      </div>
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm"
+                    >
+                      {insights[item]}
+                    </div>
 
-                    ) : null
-                  )
+                  ) : null
+                )
 
                 : insights[selectedValue] && (
 
-                    <div className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm">
-                      {insights[selectedValue]}
-                    </div>
+                  <div className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm">
+                    {insights[selectedValue]}
+                  </div>
 
-                  )}
+                )}
 
               {/* Additional Input */}
 
               {currentQuestion.id ===
                 'optimizationGoal' && (
 
-                <div className="space-y-3 rounded-3xl border border-gray-200 bg-gray-50 p-4">
+                  <div className="space-y-3 rounded-3xl border border-gray-200 bg-gray-50 p-4">
 
-                  <label className="block text-sm font-semibold text-gray-900">
-                    More About Your Goal
-                  </label>
+                    <label className="block text-sm font-semibold text-gray-900">
+                      More About Your Goal
+                    </label>
 
-                  <textarea
-                    rows="4"
-                    value={
-                      responses.purposeDetails || ''
-                    }
-                    onChange={(e) =>
-                      handlePurposeDetailsChange(
-                        e.target.value
-                      )
-                    }
-                    disabled={!isOtherPurpose}
-                    className="w-full rounded-3xl border border-gray-200 bg-white p-4 text-gray-900 outline-none transition focus:border-purple-400 focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:bg-gray-100"
-                    placeholder={
-                      isOtherPurpose
-                        ? 'Describe the specific optimization goal you want us to focus on.'
-                        : 'Select “Other / tell us more” to describe a custom optimization goal.'
-                    }
-                  />
+                    <textarea
+                      rows="4"
+                      value={
+                        responses.purposeDetails || ''
+                      }
+                      onChange={(e) =>
+                        handlePurposeDetailsChange(
+                          e.target.value
+                        )
+                      }
+                      disabled={!isOtherPurpose}
+                      className="w-full rounded-3xl border border-gray-200 bg-white p-4 text-gray-900 outline-none transition focus:border-purple-400 focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:bg-gray-100"
+                      placeholder={
+                        isOtherPurpose
+                          ? 'Describe the specific optimization goal you want us to focus on.'
+                          : 'Select “Other / tell us more” to describe a custom optimization goal.'
+                      }
+                    />
 
-                </div>
+                  </div>
 
-              )}
+                )}
 
             </div>
 
@@ -485,11 +524,10 @@ export default function SpendInputForm() {
                 disabled={
                   currentQuestionIndex === 0
                 }
-                className={`rounded-2xl border px-6 py-3 text-sm font-semibold transition ${
-                  currentQuestionIndex === 0
-                    ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'border-purple-300 bg-white text-purple-700 hover:bg-purple-50'
-                }`}
+                className={`rounded-2xl border px-6 py-3 text-sm font-semibold transition ${currentQuestionIndex === 0
+                  ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'border-purple-300 bg-white text-purple-700 hover:bg-purple-50'
+                  }`}
               >
                 Back
               </button>
@@ -498,14 +536,13 @@ export default function SpendInputForm() {
                 type="button"
                 onClick={handleNext}
                 disabled={!canContinue}
-                className={`rounded-2xl px-6 py-3 text-sm font-semibold text-white transition ${
-                  canContinue
-                    ? 'bg-purple-600 hover:bg-purple-700'
-                    : 'bg-purple-200 text-purple-400 cursor-not-allowed'
-                }`}
+                className={`rounded-2xl px-6 py-3 text-sm font-semibold text-white transition ${canContinue
+                  ? 'bg-purple-600 hover:bg-purple-700'
+                  : 'bg-purple-200 text-purple-400 cursor-not-allowed'
+                  }`}
               >
                 {currentQuestionIndex ===
-                questions.length - 1
+                  questions.length - 1
                   ? 'Finish'
                   : 'Next Question'}
               </button>
