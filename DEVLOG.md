@@ -96,3 +96,18 @@
 **Plan for tomorrow:** 
 - Improve the project
 - Push the final product for submission
+
+## Day 6 - 2026-05-11
+**Hours Worked:** 12 hours (approx)
+
+**What I did:** 
+- Completed the project what was required by the assignment 
+- I have done the every documentation required by the assignment 
+
+**What I learned:**
+- Overall Project
+
+**Blockers / what I'm stuck on:** I was stuck on a bug 
+
+**Plan for tomorrow:** 
+- Submission
