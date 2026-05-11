@@ -105,7 +105,7 @@ const questions = [
     ],
   },
   {
-    id: 'biggestPainPoints',
+    id: 'painPoints',
     multiSelect: true,
 
     title:
