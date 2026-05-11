@@ -1,16 +1,16 @@
 const overlapEngine = (
-  data
+  data = {}
 ) => {
-
-  let overlapRisk = 'Low'
-
-  let overlapFindings = []
 
   const workflows =
     data.workflow || []
 
   const painPoints =
     data.painPoints || []
+
+  let overlapRisk = 'Low'
+
+  let overlapFindings = []
 
   // User-reported overlap
 
@@ -23,11 +23,11 @@ const overlapEngine = (
     overlapRisk = 'High'
 
     overlapFindings.push(
-      'Your team reported overlapping subscriptions across multiple AI tools.'
+      'Your organization reported overlapping AI subscriptions across multiple workflows.'
     )
   }
 
-  // Dev overlap
+  // Development overlap
 
   if (
     workflows.includes(
@@ -38,7 +38,7 @@ const overlapEngine = (
     overlapRisk = 'Medium'
 
     overlapFindings.push(
-      'Development-focused workflows may overlap across Cursor, GitHub Copilot, and ChatGPT.'
+      'Development workflows may overlap across Cursor, GitHub Copilot, and ChatGPT.'
     )
   }
 
@@ -51,7 +51,7 @@ const overlapEngine = (
   ) {
 
     overlapFindings.push(
-      'Reasoning and research workflows may overlap between Claude and ChatGPT.'
+      'Research and reasoning workflows may overlap between Claude and ChatGPT.'
     )
   }
 
@@ -61,6 +61,7 @@ const overlapEngine = (
     workflows.includes(
       'General Productivity'
     ) ||
+
     workflows.includes(
       'Business Operations'
     )
@@ -90,4 +91,5 @@ const overlapEngine = (
   }
 }
 
-module.exports = overlapEngine
+module.exports =
+  overlapEngine
