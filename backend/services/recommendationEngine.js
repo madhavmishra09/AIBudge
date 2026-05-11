@@ -1,4 +1,5 @@
-const toolMatrix =  require('../data/toolMatrix')
+const toolMatrix =
+  require('../data/toolMatrix')
 
 const recommendationEngine = (
   data
@@ -16,11 +17,15 @@ const recommendationEngine = (
   const highestCostTool =
     data.highestCostTool
 
+  const optimizationGoals =
+    data.optimizationGoal || []
+
+  const teamSize =
+    data.teamSize
+
   let recommendations = []
 
   let totalSavings = 0
-
-  // Analyze current expensive tool
 
   const currentTool =
     toolMatrix[highestCostTool]
@@ -28,34 +33,42 @@ const recommendationEngine = (
   if (!currentTool) {
 
     return {
+
       recommendations: [],
-      totalSavings: '₹0/month',
+
+      totalSavings:
+        '₹0/month',
     }
   }
 
-  // Calculate workflow coverage
+  // Current workflow coverage
 
   let currentCoverage = 0
 
-  workflows.forEach((workflow) => {
+  workflows.forEach(
+    (workflow) => {
 
-    currentCoverage +=
-      currentTool.workflows[
-        workflow
-      ] || 0
-  })
+      currentCoverage +=
+        currentTool.workflows[
+          workflow
+        ] || 0
+    }
+  )
 
-  // Compare against alternatives
+  // Compare alternatives
 
   Object.keys(toolMatrix).forEach(
     (toolName) => {
 
       if (
-        toolName === highestCostTool
+        toolName ===
+        highestCostTool
       ) return
 
       const tool =
         toolMatrix[toolName]
+
+      // Alternative workflow coverage
 
       let alternativeCoverage = 0
 
@@ -89,14 +102,31 @@ const recommendationEngine = (
 
       let recommendationScore = 0
 
-      // Coverage efficiency
+      let reasoning = []
+
+      // Coverage analysis
 
       if (
+        alternativeCoverage >=
+        currentCoverage
+      ) {
+
+        recommendationScore += 4
+
+        reasoning.push(
+          `${toolName} provides equal or stronger workflow coverage for your selected use cases.`
+        )
+
+      } else if (
         alternativeCoverage >=
         currentCoverage - 2
       ) {
 
-        recommendationScore += 3
+        recommendationScore += 2
+
+        reasoning.push(
+          `${toolName} maintains similar productivity coverage with minimal workflow tradeoffs.`
+        )
       }
 
       // Cost efficiency
@@ -104,9 +134,13 @@ const recommendationEngine = (
       if (savings > 0) {
 
         recommendationScore += 3
+
+        reasoning.push(
+          `${toolName} reduces recurring AI spend by approximately ₹${savings}/month.`
+        )
       }
 
-      // Satisfaction
+      // Satisfaction analysis
 
       if (
         satisfaction ===
@@ -116,9 +150,13 @@ const recommendationEngine = (
       ) {
 
         recommendationScore += 2
+
+        reasoning.push(
+          'Your current stack shows low satisfaction signals, suggesting optimization opportunities.'
+        )
       }
 
-      // Pain points
+      // Pain point analysis
 
       if (
         painPoints.includes(
@@ -127,12 +165,78 @@ const recommendationEngine = (
       ) {
 
         recommendationScore += 2
+
+        reasoning.push(
+          'Cost concerns indicate strong potential for subscription optimization.'
+        )
       }
 
-      // Only recommend good alternatives
+      if (
+        painPoints.includes(
+          'Overlapping subscriptions'
+        )
+      ) {
+
+        recommendationScore += 2
+
+        reasoning.push(
+          `${toolName} can help consolidate overlapping workflow capabilities.`
+        )
+      }
+
+      // Optimization goals
 
       if (
-        recommendationScore >= 5
+        optimizationGoals.includes(
+          'Reduce unnecessary AI spending'
+        )
+      ) {
+
+        recommendationScore += 2
+
+        reasoning.push(
+          `${toolName} aligns strongly with your cost-reduction goals.`
+        )
+      }
+
+      if (
+        optimizationGoals.includes(
+          'Improve developer productivity'
+        ) &&
+        tool.strengths.includes(
+          'agentic coding'
+        )
+      ) {
+
+        recommendationScore += 2
+
+        reasoning.push(
+          `${toolName} offers stronger developer workflow integration and coding efficiency.`
+        )
+      }
+
+      // Scaling risk
+
+      if (
+        (
+          teamSize === '21–50' ||
+          teamSize === '50+'
+        ) &&
+        currentTool.scalingRisk ===
+          'High'
+      ) {
+
+        recommendationScore += 2
+
+        reasoning.push(
+          'Your current tooling may introduce scaling inefficiencies as team adoption increases.'
+        )
+      }
+
+      // Only recommend GOOD alternatives
+
+      if (
+        recommendationScore >= 6
       ) {
 
         totalSavings += Math.max(
@@ -152,6 +256,8 @@ const recommendationEngine = (
 
           alternativeCoverage,
 
+          recommendationScore,
+
           currentMonthlyCost:
             `₹${currentPrice}`,
 
@@ -165,26 +271,27 @@ const recommendationEngine = (
 
           productivityImpact:
             alternativeCoverage >=
-            currentCoverage
+              currentCoverage
               ? 'Positive'
               : 'Low',
 
-          recommendationScore,
-
           whyBetter:
-            `${toolName} provides better cost-to-productivity efficiency for your selected workflows.`,
+            reasoning.join(' '),
 
           tradeoff:
             alternativeCoverage >=
-            currentCoverage
+              currentCoverage
               ? 'Minimal workflow tradeoffs expected.'
-              : 'Some advanced capabilities may be reduced.',
+              : 'Some advanced premium capabilities may be reduced depending on workflow complexity.',
+
+          strategicFit:
+            `${toolName} aligns well with your organization's optimization priorities and workflow requirements.`,
         })
       }
     }
   )
 
-  // Sort best recommendations first
+  // Sort strongest recommendations first
 
   recommendations.sort(
     (a, b) =>
