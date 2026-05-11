@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import MetricCard from '../components/MetricCard'
 import RecommendationCard from '../components/RecommendationCard'
-import CostBreakdownChart from '../components/CostBreakdownChart'
+/*import CostBreakdownChart from '../components/CostBreakdownChart'*/
 import KeyFindings from '../components/KeyFindings'
 
 export default function SummaryReport() {
@@ -168,11 +168,11 @@ export default function SummaryReport() {
 
         {/* Cost Graph */}
 
-        <CostBreakdownChart
+        {/* <CostBreakdownChart
           recommendations={
             audit?.recommendations || []
           }
-        />
+        /> */}
 
         {/* Recommendations */}
 
