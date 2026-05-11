@@ -125,7 +125,26 @@ const questions = [
       'Inconsistent outputs',
       'Team adoption is low',
     ],
-  }
+  },
+  {
+  id: 'highestCostTool',
+
+  multiSelect: false,
+
+  title:
+    'Which AI tool currently costs your organization the most monthly?',
+
+  hint:
+    'This helps identify optimization opportunities and cost concentration.',
+
+  options: [
+    'ChatGPT',
+    'Claude',
+    'Cursor',
+    'GitHub Copilot',
+    'Gemini',
+  ],
+}
 ]
 
 function QuestionOptionButton({
