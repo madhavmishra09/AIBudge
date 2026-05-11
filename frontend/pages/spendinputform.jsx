@@ -1,12 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { generateAudit } from './auditService'
+
 const questions = [
+
   {
     id: 'workflow',
+
     multiSelect: true,
-    title: 'Which workflows do you use AI for?',
-    hint: 'Select all workflows where AI tools are actively used.',
+
+    title:
+      'Which workflows do you use AI for?',
+
+    hint:
+      'Select all workflows where AI tools are actively used.',
+
     options: [
       'Software Development',
       'Content & Research',
@@ -19,9 +27,15 @@ const questions = [
 
   {
     id: 'subscriptionManagement',
+
     multiSelect: false,
-    title: 'How are your AI subscriptions currently managed?',
-    hint: 'Understanding ownership helps identify optimization opportunities.',
+
+    title:
+      'How are your AI subscriptions currently managed?',
+
+    hint:
+      'Understanding ownership helps identify optimization opportunities.',
+
     options: [
       'Personally paid subscriptions',
       'Team-managed licenses',
@@ -32,35 +46,53 @@ const questions = [
 
   {
     id: 'monthlySpend',
+
     multiSelect: false,
-    title: 'What is your estimated monthly AI spend across all tools?',
-    hint: 'Include subscriptions, API usage, and team licenses.',
+
+    title:
+      'What is your estimated monthly AI spend across all tools?',
+
+    hint:
+      'Include subscriptions, API usage, and team licenses.',
+
     options: [
-      '$0–100',
-      '$100–500',
-      '$500–1K',
+      '$0-100',
+      '$100-500',
+      '$500-1K',
       '$1K+',
     ],
   },
 
   {
     id: 'teamSize',
+
     multiSelect: false,
-    title: 'How many people actively use AI tools in your organization?',
-    hint: 'This helps us evaluate scaling efficiency and tool overlap.',
+
+    title:
+      'How many people actively use AI tools in your organization?',
+
+    hint:
+      'This helps us evaluate scaling efficiency and tool overlap.',
+
     options: [
-      '1–5',
-      '6–20',
-      '21–50',
+      '1-5',
+      '6-20',
+      '21-50',
       '50+',
     ],
   },
 
   {
     id: 'optimizationGoal',
+
     multiSelect: true,
-    title: 'What are you optimizing for right now?',
-    hint: 'Select all outcomes that matter to your organization.',
+
+    title:
+      'What are you optimizing for right now?',
+
+    hint:
+      'Select all outcomes that matter to your organization.',
+
     options: [
       'Reduce unnecessary AI spending',
       'Improve developer productivity',
@@ -74,9 +106,15 @@ const questions = [
 
   {
     id: 'leastValuable',
+
     multiSelect: true,
-    title: 'Which AI subscriptions feel the least valuable right now?',
-    hint: 'Select any subscriptions that currently feel redundant or underutilized.',
+
+    title:
+      'Which AI subscriptions feel the least valuable right now?',
+
+    hint:
+      'Select any subscriptions that currently feel redundant or underutilized.',
+
     options: [
       'ChatGPT',
       'Claude',
@@ -86,8 +124,10 @@ const questions = [
       'Not sure yet',
     ],
   },
+
   {
     id: 'teamSatisfaction',
+
     multiSelect: false,
 
     title:
@@ -104,8 +144,10 @@ const questions = [
       'Very Unsatisfied',
     ],
   },
+
   {
     id: 'painPoints',
+
     multiSelect: true,
 
     title:
@@ -126,25 +168,26 @@ const questions = [
       'Team adoption is low',
     ],
   },
+
   {
-  id: 'highestCostTool',
+    id: 'highestCostTool',
 
-  multiSelect: false,
+    multiSelect: false,
 
-  title:
-    'Which AI tool currently costs your organization the most monthly?',
+    title:
+      'Which AI tool currently costs your organization the most monthly?',
 
-  hint:
-    'This helps identify optimization opportunities and cost concentration.',
+    hint:
+      'This helps identify optimization opportunities and cost concentration.',
 
-  options: [
-    'ChatGPT',
-    'Claude',
-    'Cursor',
-    'GitHub Copilot',
-    'Gemini',
-  ],
-}
+    options: [
+      'ChatGPT',
+      'Claude',
+      'Cursor',
+      'GitHub Copilot',
+      'Gemini',
+    ],
+  },
 ]
 
 function QuestionOptionButton({
@@ -152,14 +195,17 @@ function QuestionOptionButton({
   selected,
   onClick,
 }) {
+
   return (
+
     <button
       type="button"
       onClick={onClick}
-      className={`w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 shadow-sm hover:border-purple-400 hover:bg-purple-50 ${selected
-        ? 'border-purple-500 bg-purple-100 text-purple-900 shadow-md'
-        : 'border-gray-200 bg-white text-gray-700'
-        }`}
+      className={`w-full rounded-2xl border px-5 py-4 text-left transition-all duration-200 shadow-sm hover:border-purple-400 hover:bg-purple-50 ${
+        selected
+          ? 'border-purple-500 bg-purple-100 text-purple-900 shadow-md'
+          : 'border-gray-200 bg-white text-gray-700'
+      }`}
     >
       {label}
     </button>
@@ -170,11 +216,21 @@ export default function SpendInputForm() {
 
   const navigate = useNavigate()
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] =
-    useState(0)
+  const [
+    currentQuestionIndex,
+    setCurrentQuestionIndex,
+  ] = useState(0)
 
-  const [responses, setResponses] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [
+    responses,
+    setResponses,
+  ] = useState({})
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(false)
+
   const currentQuestion =
     questions[currentQuestionIndex]
 
@@ -186,6 +242,7 @@ export default function SpendInputForm() {
         : null
 
   const insights = {
+
     Cursor:
       'Cursor already covers many coding assistant workflows.',
 
@@ -206,27 +263,43 @@ export default function SpendInputForm() {
   }
 
   const isOtherPurpose =
-    currentQuestion?.id === 'optimizationGoal' &&
+
+    currentQuestion?.id ===
+      'optimizationGoal' &&
+
     selectedValue?.includes(
       'Other / tell us more'
     )
 
   const hasPurposeDetails =
-    responses.purposeDetails?.trim().length > 0
 
-  const canContinue = currentQuestion?.multiSelect
-    ? selectedValue?.length > 0 &&
-    (!isOtherPurpose || hasPurposeDetails)
-    : Boolean(
-      selectedValue &&
-      (!isOtherPurpose ||
-        hasPurposeDetails)
-    )
+    responses.purposeDetails
+      ?.trim()
+      .length > 0
+
+  const canContinue =
+    currentQuestion?.multiSelect
+
+      ? selectedValue?.length > 0 &&
+        (
+          !isOtherPurpose ||
+          hasPurposeDetails
+        )
+
+      : Boolean(
+          selectedValue &&
+          (
+            !isOtherPurpose ||
+            hasPurposeDetails
+          )
+        )
 
   const completed =
-    currentQuestionIndex >= questions.length
+    currentQuestionIndex ===
+    questions.length
 
   const progress = Math.round(
+
     (
       Math.min(
         currentQuestionIndex,
@@ -235,11 +308,15 @@ export default function SpendInputForm() {
     ) * 100
   )
 
-  const handleOptionClick = (value) => {
+  const handleOptionClick = (
+    value
+  ) => {
 
     if (!currentQuestion) return
 
-    if (currentQuestion.multiSelect) {
+    if (
+      currentQuestion.multiSelect
+    ) {
 
       setResponses((prev) => {
 
@@ -247,33 +324,51 @@ export default function SpendInputForm() {
           prev[currentQuestion.id] || []
 
         const alreadySelected =
-          currentSelections.includes(value)
+          currentSelections.includes(
+            value
+          )
 
         return {
+
           ...prev,
 
-          [currentQuestion.id]: alreadySelected
-            ? currentSelections.filter(
-              (item) => item !== value
-            )
-            : [...currentSelections, value],
+          [currentQuestion.id]:
+            alreadySelected
+
+              ? currentSelections.filter(
+                  (item) =>
+                    item !== value
+                )
+
+              : [
+                  ...currentSelections,
+                  value,
+                ],
         }
       })
 
     } else {
 
       setResponses((prev) => ({
-        ...prev,
-        [currentQuestion.id]: value,
-      }))
 
+        ...prev,
+
+        [currentQuestion.id]:
+          value,
+      }))
     }
   }
 
-  const handlePurposeDetailsChange = (value) => {
+  const handlePurposeDetailsChange = (
+    value
+  ) => {
+
     setResponses((prev) => ({
+
       ...prev,
-      purposeDetails: value,
+
+      purposeDetails:
+        value,
     }))
   }
 
@@ -281,15 +376,20 @@ export default function SpendInputForm() {
 
     if (!canContinue) return
 
-    setCurrentQuestionIndex((index) =>
-      Math.min(index + 1, questions.length)
+    setCurrentQuestionIndex(
+      (index) =>
+        Math.min(
+          index + 1,
+          questions.length
+        )
     )
   }
 
   const handleBack = () => {
 
-    setCurrentQuestionIndex((index) =>
-      Math.max(index - 1, 0)
+    setCurrentQuestionIndex(
+      (index) =>
+        Math.max(index - 1, 0)
     )
   }
 
@@ -306,7 +406,7 @@ export default function SpendInputForm() {
 
       <div className="mx-auto max-w-4xl rounded-[36px] border border-purple-200 bg-white/90 p-8 shadow-[0_25px_80px_rgba(133,90,255,0.08)] backdrop-blur-xl">
 
-        {/* Header */}
+        {/* HEADER */}
 
         <div className="flex flex-col gap-3 pb-8 text-center">
 
@@ -320,13 +420,12 @@ export default function SpendInputForm() {
 
           <p className="mx-auto max-w-2xl text-gray-600">
             We analyze your AI stack, detect overlapping subscriptions,
-            and identify opportunities to reduce costs while improving
-            productivity.
+            and identify opportunities to reduce costs while improving productivity.
           </p>
 
         </div>
 
-        {/* Progress */}
+        {/* PROGRESS */}
 
         <div className="mb-8 rounded-full bg-purple-100 p-1">
 
@@ -339,6 +438,8 @@ export default function SpendInputForm() {
 
         </div>
 
+        {/* COMPLETED */}
+
         {completed ? (
 
           <div className="space-y-6">
@@ -350,100 +451,64 @@ export default function SpendInputForm() {
               </h2>
 
               <p className="mt-3 text-gray-700">
-                We can now analyze your stack, detect overlapping
-                subscriptions, and recommend a more cost-efficient workflow.
+                We can now analyze your stack and generate your optimization report.
               </p>
 
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-
-              {questions.map((question) => (
-
-                <div
-                  key={question.id}
-                  className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm"
-                >
-
-                  <h3 className="font-semibold text-gray-900">
-                    {question.title}
-                  </h3>
-
-                  <p className="mt-3 text-gray-600">
-
-                    {Array.isArray(
-                      responses[question.id]
-                    )
-                      ? responses[
-                        question.id
-                      ]?.join(', ')
-                      : responses[
-                      question.id
-                      ] || 'No answer selected'}
-
-                  </p>
-
-                </div>
-
-              ))}
-
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex justify-end">
 
               <button
                 type="button"
-                onClick={handleRestart}
-                className="rounded-2xl border border-purple-300 bg-white px-6 py-3 text-sm font-semibold text-purple-700 transition hover:bg-purple-50"
+
+                onClick={async () => {
+
+                  try {
+
+                    setLoading(true)
+
+                    console.log(
+                      responses
+                    )
+
+                    const audit =
+                      await generateAudit(
+                        responses
+                      )
+
+                    console.log(audit)
+
+                    localStorage.setItem(
+                      'auditReport',
+                      JSON.stringify(
+                        audit
+                      )
+                    )
+
+                    navigate('/report')
+
+                  } catch (error) {
+
+                    console.error(error)
+
+                    alert(
+                      'Failed to generate audit report.'
+                    )
+
+                  } finally {
+
+                    setLoading(false)
+                  }
+                }}
+
+                className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
               >
-                Start Over
+
+                {loading
+                  ? 'Generating Report...'
+                  : 'View Optimization Report'}
+
               </button>
-
-              <button
-  type="button"
-
-  onClick={async () => {
-
-    try {
-
-      setLoading(true)
-
-      const audit =
-        await generateAudit(
-          responses
-        )
-
-      console.log(audit)
-
-      localStorage.setItem(
-        'auditReport',
-        JSON.stringify(audit)
-      )
-
-      navigate('/report')
-
-    } catch (error) {
-
-      console.error(error)
-
-      alert(
-        'Failed to generate audit report.'
-      )
-
-    } finally {
-
-      setLoading(false)
-    }
-  }}
-
-  className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
->
-
-  {loading
-    ? 'Generating Report...'
-    : 'View Optimization Report'}
-
-</button>
 
             </div>
 
@@ -471,7 +536,7 @@ export default function SpendInputForm() {
 
               </div>
 
-              {/* Multi Select Hint */}
+              {/* MULTI SELECT */}
 
               {currentQuestion.multiSelect && (
 
@@ -481,93 +546,41 @@ export default function SpendInputForm() {
 
               )}
 
-              {/* Options */}
+              {/* OPTIONS */}
 
               <div className="grid gap-4 md:grid-cols-2">
 
-                {currentQuestion.options.map((option) => (
+                {currentQuestion.options.map(
+                  (option) => (
 
-                  <QuestionOptionButton
-                    key={option}
-                    label={option}
-                    selected={
-                      currentQuestion.multiSelect
-                        ? selectedValue?.includes(
+                    <QuestionOptionButton
+                      key={option}
+                      label={option}
+                      selected={
+                        currentQuestion.multiSelect
+
+                          ? selectedValue?.includes(
+                              option
+                            )
+
+                          : selectedValue ===
+                            option
+                      }
+
+                      onClick={() =>
+                        handleOptionClick(
                           option
                         )
-                        : selectedValue === option
-                    }
-                    onClick={() =>
-                      handleOptionClick(option)
-                    }
-                  />
-
-                ))}
+                      }
+                    />
+                  )
+                )}
 
               </div>
 
-              {/* Insights */}
-
-              {Array.isArray(selectedValue)
-                ? selectedValue.map((item) =>
-
-                  insights[item] ? (
-
-                    <div
-                      key={item}
-                      className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm"
-                    >
-                      {insights[item]}
-                    </div>
-
-                  ) : null
-                )
-
-                : insights[selectedValue] && (
-
-                  <div className="rounded-2xl border border-purple-200 bg-purple-50 p-4 text-sm text-purple-900 shadow-sm">
-                    {insights[selectedValue]}
-                  </div>
-
-                )}
-
-              {/* Additional Input */}
-
-              {currentQuestion.id ===
-                'optimizationGoal' && (
-
-                  <div className="space-y-3 rounded-3xl border border-gray-200 bg-gray-50 p-4">
-
-                    <label className="block text-sm font-semibold text-gray-900">
-                      More About Your Goal
-                    </label>
-
-                    <textarea
-                      rows="4"
-                      value={
-                        responses.purposeDetails || ''
-                      }
-                      onChange={(e) =>
-                        handlePurposeDetailsChange(
-                          e.target.value
-                        )
-                      }
-                      disabled={!isOtherPurpose}
-                      className="w-full rounded-3xl border border-gray-200 bg-white p-4 text-gray-900 outline-none transition focus:border-purple-400 focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:bg-gray-100"
-                      placeholder={
-                        isOtherPurpose
-                          ? 'Describe the specific optimization goal you want us to focus on.'
-                          : 'Select “Other / tell us more” to describe a custom optimization goal.'
-                      }
-                    />
-
-                  </div>
-
-                )}
-
             </div>
 
-            {/* Navigation */}
+            {/* NAVIGATION */}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
@@ -577,10 +590,11 @@ export default function SpendInputForm() {
                 disabled={
                   currentQuestionIndex === 0
                 }
-                className={`rounded-2xl border px-6 py-3 text-sm font-semibold transition ${currentQuestionIndex === 0
-                  ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'border-purple-300 bg-white text-purple-700 hover:bg-purple-50'
-                  }`}
+                className={`rounded-2xl border px-6 py-3 text-sm font-semibold transition ${
+                  currentQuestionIndex === 0
+                    ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'border-purple-300 bg-white text-purple-700 hover:bg-purple-50'
+                }`}
               >
                 Back
               </button>
@@ -589,13 +603,14 @@ export default function SpendInputForm() {
                 type="button"
                 onClick={handleNext}
                 disabled={!canContinue}
-                className={`rounded-2xl px-6 py-3 text-sm font-semibold text-white transition ${canContinue
-                  ? 'bg-purple-600 hover:bg-purple-700'
-                  : 'bg-purple-200 text-purple-400 cursor-not-allowed'
-                  }`}
+                className={`rounded-2xl px-6 py-3 text-sm font-semibold text-white transition ${
+                  canContinue
+                    ? 'bg-purple-600 hover:bg-purple-700'
+                    : 'bg-purple-200 text-purple-400 cursor-not-allowed'
+                }`}
               >
                 {currentQuestionIndex ===
-                  questions.length - 1
+                questions.length - 1
                   ? 'Finish'
                   : 'Next Question'}
               </button>
