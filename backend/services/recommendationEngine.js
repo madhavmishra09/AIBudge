@@ -2,33 +2,53 @@ const toolMatrix =
   require('../data/toolMatrix')
 
 const recommendationEngine = (
-  data
+  data = {}
 ) => {
 
+  // SAFE INPUT NORMALIZATION
+
   const workflows =
-    data.workflow || []
+    Array.isArray(
+      data?.workflow
+    )
+      ? data.workflow
+      : []
 
   const satisfaction =
-    data.teamSatisfaction
+    data?.teamSatisfaction || ''
 
   const painPoints =
-    data.painPoints || []
+    Array.isArray(
+      data?.painPoints
+    )
+      ? data.painPoints
+      : []
 
   const highestCostTool =
-    data.highestCostTool
+    data?.highestCostTool || ''
 
   const optimizationGoals =
-    data.optimizationGoal || []
+    Array.isArray(
+      data?.optimizationGoal
+    )
+      ? data.optimizationGoal
+      : []
 
   const teamSize =
-    data.teamSize
+    data?.teamSize || ''
 
   let recommendations = []
 
   let totalSavings = 0
 
+  // SAFE TOOL LOOKUP
+
   const currentTool =
-    toolMatrix[highestCostTool]
+    toolMatrix?.[
+      highestCostTool
+    ]
+
+  // RETURN EARLY IF TOOL NOT FOUND
 
   if (!currentTool) {
 
@@ -41,7 +61,7 @@ const recommendationEngine = (
     }
   }
 
-  // Current workflow coverage
+  // CURRENT WORKFLOW COVERAGE
 
   let currentCoverage = 0
 
@@ -49,16 +69,20 @@ const recommendationEngine = (
     (workflow) => {
 
       currentCoverage +=
-        currentTool.workflows[
+        currentTool?.workflows?.[
           workflow
         ] || 0
     }
   )
 
-  // Compare alternatives
+  // COMPARE ALTERNATIVES
 
-  Object.keys(toolMatrix).forEach(
+  Object.keys(
+    toolMatrix || {}
+  ).forEach(
     (toolName) => {
+
+      // SKIP CURRENT TOOL
 
       if (
         toolName ===
@@ -66,9 +90,13 @@ const recommendationEngine = (
       ) return
 
       const tool =
-        toolMatrix[toolName]
+        toolMatrix?.[
+          toolName
+        ]
 
-      // Alternative workflow coverage
+      if (!tool) return
+
+      // ALTERNATIVE COVERAGE
 
       let alternativeCoverage = 0
 
@@ -76,35 +104,45 @@ const recommendationEngine = (
         (workflow) => {
 
           alternativeCoverage +=
-            tool.workflows[
+            tool?.workflows?.[
               workflow
             ] || 0
         }
       )
 
-      // Pricing
+      // SAFE PRICING
 
       const currentPrice =
-        Object.values(
-          currentTool.pricing
-        )[0]
+
+        currentTool?.pricing
+
+          ? Object.values(
+              currentTool.pricing
+            )[0]
+
+          : 0
 
       const alternativePrice =
-        Object.values(
-          tool.pricing
-        )[0]
+
+        tool?.pricing
+
+          ? Object.values(
+              tool.pricing
+            )[0]
+
+          : 0
 
       const savings =
         currentPrice -
         alternativePrice
 
-      // Recommendation Score
+      // RECOMMENDATION SCORE
 
       let recommendationScore = 0
 
       let reasoning = []
 
-      // Coverage analysis
+      // COVERAGE ANALYSIS
 
       if (
         alternativeCoverage >=
@@ -129,7 +167,7 @@ const recommendationEngine = (
         )
       }
 
-      // Cost efficiency
+      // COST EFFICIENCY
 
       if (savings > 0) {
 
@@ -140,11 +178,12 @@ const recommendationEngine = (
         )
       }
 
-      // Satisfaction analysis
+      // SATISFACTION ANALYSIS
 
       if (
         satisfaction ===
           'Mostly Unsatisfied' ||
+
         satisfaction ===
           'Very Unsatisfied'
       ) {
@@ -152,11 +191,11 @@ const recommendationEngine = (
         recommendationScore += 2
 
         reasoning.push(
-          'Your current stack shows low satisfaction signals, suggesting optimization opportunities.'
+          'Current satisfaction levels indicate optimization opportunities.'
         )
       }
 
-      // Pain point analysis
+      // PAIN POINT ANALYSIS
 
       if (
         painPoints.includes(
@@ -167,7 +206,7 @@ const recommendationEngine = (
         recommendationScore += 2
 
         reasoning.push(
-          'Cost concerns indicate strong potential for subscription optimization.'
+          'Cost concerns indicate strong potential for AI spend optimization.'
         )
       }
 
@@ -180,11 +219,11 @@ const recommendationEngine = (
         recommendationScore += 2
 
         reasoning.push(
-          `${toolName} can help consolidate overlapping workflow capabilities.`
+          `${toolName} may help consolidate overlapping AI workflow capabilities.`
         )
       }
 
-      // Optimization goals
+      // OPTIMIZATION GOALS
 
       if (
         optimizationGoals.includes(
@@ -203,7 +242,8 @@ const recommendationEngine = (
         optimizationGoals.includes(
           'Improve developer productivity'
         ) &&
-        tool.strengths.includes(
+
+        tool?.strengths?.includes(
           'agentic coding'
         )
       ) {
@@ -211,29 +251,31 @@ const recommendationEngine = (
         recommendationScore += 2
 
         reasoning.push(
-          `${toolName} offers stronger developer workflow integration and coding efficiency.`
+          `${toolName} offers stronger coding workflow integration and developer productivity support.`
         )
       }
 
-      // Scaling risk
+      // SCALING RISK
 
       if (
         (
-          teamSize === '21–50' ||
+          teamSize === '21-50' ||
+
           teamSize === '50+'
         ) &&
-        currentTool.scalingRisk ===
+
+        currentTool?.scalingRisk ===
           'High'
       ) {
 
         recommendationScore += 2
 
         reasoning.push(
-          'Your current tooling may introduce scaling inefficiencies as team adoption increases.'
+          'Current tooling may introduce scaling inefficiencies as team adoption increases.'
         )
       }
 
-      // Only recommend GOOD alternatives
+      // ONLY RECOMMEND STRONG OPTIONS
 
       if (
         recommendationScore >= 6
@@ -285,19 +327,24 @@ const recommendationEngine = (
               : 'Some advanced premium capabilities may be reduced depending on workflow complexity.',
 
           strategicFit:
-            `${toolName} aligns well with your organization's optimization priorities and workflow requirements.`,
+            `${toolName} aligns well with your optimization priorities and workflow requirements.`,
         })
       }
     }
   )
 
-  // Sort strongest recommendations first
+  // SAFE SORT
 
-  recommendations.sort(
-    (a, b) =>
-      b.recommendationScore -
-      a.recommendationScore
-  )
+  if (
+    recommendations.length > 0
+  ) {
+
+    recommendations.sort(
+      (a, b) =>
+        b.recommendationScore -
+        a.recommendationScore
+    )
+  }
 
   return {
 
