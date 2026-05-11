@@ -1,24 +1,34 @@
-const express = require("express");
-const generateAudit = require("../services/auditEngine");
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/analyze", async (req, res) => {
+const generateAudit =
+  require('../services/auditEngine')
 
-  try {
+router.post(
+  '/analyze',
+  async (req, res) => {
 
-    const audit = await generateAudit(req.body);
+    try {
 
-    res.json(audit);
+      const report =
+        await generateAudit(
+          req.body
+        )
 
-  } catch (err) {
+      res.json(report)
 
-    console.error(err);
+    } catch (error) {
 
-    res.status(500).json({
-      error: "Audit generation failed"
-    });
+      console.error(error)
+
+      res.status(500).json({
+
+        error:
+          'Audit generation failed',
+      })
+    }
   }
-});
+)
 
-module.exports = router;
+module.exports = router
