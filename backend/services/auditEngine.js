@@ -43,8 +43,6 @@ const generateAudit = async (
 
   // STEP 5 — Ask Ollama
 
-  const OLLAMA_BASE_URL =
-  process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
 
 const groqResponse = await axios.post(
   'https://api.groq.com/openai/v1/chat/completions',
