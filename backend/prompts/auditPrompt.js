@@ -1,74 +1,85 @@
 const buildAuditPrompt = (
+
   data,
-  reasoning
+  scoring,
+  overlap,
+  recommendations
+
 ) => {
 
   return `
-You are an AI stack optimization consultant.
+You are an AI SaaS optimization consultant.
 
-Analyze the following AI tooling setup.
+Analyze the following organization's AI tooling setup.
 
-User Workflows:
+WORKFLOWS:
 ${data.workflow?.join(', ')}
 
-Monthly Spend:
-${data.monthlySpend}
-
-Team Size:
+TEAM SIZE:
 ${data.teamSize}
 
-Optimization Goals:
-${data.optimizationGoal?.join(', ')}
+MONTHLY SPEND:
+${data.monthlySpend}
 
-Least Valuable Subscriptions:
-${data.leastValuable?.join(', ')}
+TEAM SATISFACTION:
+${data.teamSatisfaction}
 
-Reasoning Engine Output:
+PAIN POINTS:
+${data.painPoints?.join(', ')}
+
+HIGHEST COST TOOL:
+${data.highestCostTool}
+
+SCORING ENGINE RESULTS:
 
 Optimization Score:
-${reasoning.optimizationScore}/10
+${scoring.score}/10
+
+Findings:
+${scoring.findings.join('\n')}
+
+OVERLAP ANALYSIS:
 
 Overlap Risk:
-${reasoning.overlapRisk}
+${overlap.overlapRisk}
 
-Overlap Reasons:
-${reasoning.overlapReasons.join('\n')}
+Overlap Findings:
+${overlap.overlapFindings.join('\n')}
 
-Recommendations:
-${reasoning.recommendations.join('\n')}
+RECOMMENDATION ENGINE OUTPUT:
 
-Suggested Stack:
-${reasoning.suggestedStack.join(', ')}
-
-Estimated Savings:
-${reasoning.estimatedSavings}
-
-Generate:
-
-1. strategicSummary
-2. tradeoffAnalysis
-3. finalRecommendation
+${JSON.stringify(
+  recommendations.recommendations,
+  null,
+  2
+)}
 
 IMPORTANT:
 
-- strategicSummary must be around 100 words
+Generate a professional AI optimization report.
+
+You MUST:
+
 - explain WHY recommendations are being made
-- explain overlap
+- explain pricing inefficiencies
+- explain overlap problems
 - explain productivity tradeoffs
-- explain cost reduction opportunities
-- sound like a SaaS optimization consultant
+- explain expected savings
+- sound like a SaaS consultant
+- provide realistic optimization insights
 - avoid generic statements
 
 Respond ONLY in valid JSON.
 
-Example:
+Format:
 
 {
-  "strategicSummary": "Your current AI stack...",
-  "tradeoffAnalysis": "Replacing Claude...",
-  "finalRecommendation": "Standardize your stack..."
+  "strategicSummary": "...",
+  "tradeoffAnalysis": "...",
+  "finalRecommendation": "..."
 }
 `
 }
 
-module.exports = buildAuditPrompt
+module.exports =
+  buildAuditPrompt
