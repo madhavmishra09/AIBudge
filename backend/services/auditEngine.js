@@ -46,14 +46,28 @@ const generateAudit = async (
   const OLLAMA_BASE_URL =
   process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
 
-const ollamaResponse = await axios.post(
-  `${OLLAMA_BASE_URL}/api/generate`,
+const groqResponse = await axios.post(
+  'https://api.groq.com/openai/v1/chat/completions',
   {
-    model: process.env.OLLAMA_MODEL || 'phi3:mini',
-    prompt,
-    stream: false,
+    model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are an AI SaaS spend optimization analyst. Return only valid JSON. Do not use markdown.',
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.3,
   },
   {
+    headers: {
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
     timeout: 120000,
   }
 )
@@ -66,7 +80,7 @@ const ollamaResponse = await axios.post(
   try {
 
     let cleanedResponse =
-      ollamaResponse.data.response
+      groqResponse.data.choices[0].message.content
 
     // Remove markdown wrappers
 
