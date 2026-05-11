@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { generateAudit } from './auditService'
 const questions = [
   {
     id: 'workflow',
@@ -174,7 +174,7 @@ export default function SpendInputForm() {
     useState(0)
 
   const [responses, setResponses] = useState({})
-
+  const [loading, setLoading] = useState(false)
   const currentQuestion =
     questions[currentQuestionIndex]
 
@@ -400,16 +400,50 @@ export default function SpendInputForm() {
               </button>
 
               <button
-                type="button"
-                onClick={() =>
-                  navigate('/report', {
-                    state: { responses },
-                  })
-                }
-                className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
-              >
-                View Optimization Report
-              </button>
+  type="button"
+
+  onClick={async () => {
+
+    try {
+
+      setLoading(true)
+
+      const audit =
+        await generateAudit(
+          responses
+        )
+
+      console.log(audit)
+
+      localStorage.setItem(
+        'auditReport',
+        JSON.stringify(audit)
+      )
+
+      navigate('/report')
+
+    } catch (error) {
+
+      console.error(error)
+
+      alert(
+        'Failed to generate audit report.'
+      )
+
+    } finally {
+
+      setLoading(false)
+    }
+  }}
+
+  className="inline-flex items-center justify-center rounded-2xl bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700"
+>
+
+  {loading
+    ? 'Generating Report...'
+    : 'View Optimization Report'}
+
+</button>
 
             </div>
 
